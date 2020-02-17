@@ -1,0 +1,2 @@
+git add . // añade todos los archivos y cambios hechos
+git commit -m *Nuevo* // añade comentarios a la acción de commit
