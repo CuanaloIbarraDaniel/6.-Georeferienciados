@@ -1,2 +1,12 @@
-git add . // añade todos los archivos y cambios hechos
-git commit -m *Nuevo* // añade comentarios a la acción de commit
+git add . // añade todos los archivos y cambios hechos.
+git commit -m *Nuevo* // añade comentarios a la acción de commit.
+git push origin master // actualizar el documento.
+
+
+Concepto                                        Comando
+Inicializar el repositorio                      $git init
+Crea una copia local del repositorio            $git clone rutadelrepositorio
+Registrar cambios (añadirlos al Index) usando   $git add .
+Hacer commit a los cambios                      $git commit -m "Comentario"
+Enviar cambios a repositorio remoto             $git push origin master
+Recibir cambios                                 $git pull
