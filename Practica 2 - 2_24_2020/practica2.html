@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        .parrafos {
+            font-size: 30px;
+        }
+
+        .texto1 {
+            border: #000 solid 1 px;
+        }
+
+        #boton {
+            color: #000;
+            background-color: #ff0000;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ejemplo de Navigator</h1>
+    <button id="boton" onclick="ObtieneDatos()">Obtiene datos del navegador</button>
+
+    <p class="datos">Este es un parrafo</p>
+    <p class="parrafos">Este es un parrafo 2</p>
+
+    <ul id="navegador">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <script>
+        var navegador = document.getElementById("navegador");
+        var datos = document.getElementsByTagName("li");
+
+        function ObtieneDatos() {
+            datos[0].innerHTML = "Nombre del navegador: " + navigator.appCodeName;
+            datos[1].innerHTML = "Version del navegador: " + navigator.appVersion;
+            datos[2].innerHTML = "Estatus del internet: " + navigator.onLine;
+            datos[3].innerHTML = "Plataforma del navegador: " + navigator.platform;
+
+
+            console.log("Nombre del navegador: " + navigator.appCodeName);
+            console.log("Version del navegador: " + navigator.appVersion);
+            console.log("Estatus del internet: " + navigator.onLine);
+            console.log("Plataforma del navegador: " + navigator.platform);
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
