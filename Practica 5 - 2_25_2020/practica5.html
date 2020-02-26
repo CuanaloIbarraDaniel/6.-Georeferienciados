@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aou estática de Google</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <style>
+            #mapa {
+                height: 600px;
+                width: 100%;
+                background-color: black;
+            }
+        </style>
+</head>
+<body>
+    <div id="mapa"></div>
+
+    <script>
+        function iniciarMapa() { 
+            var map = new google.maps.Map(document.getElementById("mapa"), { center: { lat: 21.152639, lng: -101.711598 }, zoom: 14 });
+            var informacion = new google.maps.InfoWindow;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = { lat: position.coords.latitude, lng: position.coords.longitude};
+                    
+                    informacion.setPosition(pos);
+                    informacion.setContent("Te estamos observando. <br> <img src='https://as.ftcdn.net/r/v1/pics/7b11b8176a3611dbfb25406156a6ef50cd3a5009/home/discover_collections/optimized/image-2019-10-11-11-36-27-681.jpg'>");
+                    informacion.open(map);
+                    map.setCenter(pos);
+                });
+            }
+            else {
+                alert("Not valid on this navigator")
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpuvAO0z77RBz_rOfuXt8rHTTBWoI4TqI&callback=iniciarMapa" async defer></script>
+</body>
+
+</html>
