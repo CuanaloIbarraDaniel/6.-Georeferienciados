@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Lista de productos</h1>
+            </div>
+        </div>
+        <form id="forma">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="nombre" class="form-control" placeholder="Nombre">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="codigo" class="form-control" placeholder="Codigo">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" onclick="AddProduct()" class="btn btn-primary btn-block">Agregar</button>
+                </div>
+                <div class="col-md-4">
+                    <ul id="lista" class="list-group"></ul>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAMH-rsvMKOvOYe9fER2uHqhCsvilf42QU",
+            authDomain: "pro06-52749.firebaseapp.com",
+            databaseURL: "https://pro06-52749.firebaseio.com",
+            projectId: "pro06-52749",
+            storageBucket: "pro06-52749.appspot.com",
+            messagingSenderId: "485109000366",
+            appId: "1:485109000366:web:68534d71bef6188bb2653f",
+            measurementId: "G-VBNJD6NW5L"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const productosLista = document.getElementById("lista");
+        const formulario = document.getElementById("forma");
+
+        function renderProductos(doc) {
+            let li = document.createElement("li");
+            let nombre = document.createElement("span");
+            let codigo = document.createElement("span");
+            let borrar = document.createElement("button");
+
+            borrar.classList.add('btn');
+            borrar.classList.add('btn-danger');
+
+            nombre.textContent = doc.data().nombre;
+            codigo.textContent = doc.data().codigo;
+            borrar.textContent = "Borrar";
+
+            li.id = doc.id;
+
+
+            borrar.addEventListener("click", delete_click => {
+                let id = delete_click.target.parentElement.getAttribute('id');
+                console.log("TAS: " + id);
+                db.collection('productos').doc(id).delete();
+            });
+
+            li.appendChild(borrar);
+            li.appendChild(nombre);
+            li.appendChild(codigo);
+
+            productosLista.appendChild(li);
+        }
+
+
+
+        function AddProduct() {
+            db.collection("productos").add({
+                nombre: formulario.nombre.value,
+                codigo: formulario.codigo.value
+            });
+
+            formulario.nombre.value = "";
+            formulario.codigo.value = "";
+        }
+
+
+
+        db.collection("productos").onSnapshot(snapshot => {
+            let changes = snapshot.docChanges();
+            changes.forEach(change => {
+                if (change.type === 'added') {
+                    console.log("Add " + change.type);
+                    renderProductos(change.doc);
+                }
+                else if (change.type === 'removed') {
+                    console.log("Remove " + change.type);
+                    lista.removeChild(document.getElementById(change.doc.id));
+                }
+            });
+        });
+
+
+
+        formulario.addEventListener("submit", e => {
+            e.preventDefault();
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

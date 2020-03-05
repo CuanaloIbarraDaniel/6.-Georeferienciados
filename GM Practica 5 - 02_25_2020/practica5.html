@@ -19,8 +19,11 @@
     <div id="mapa"></div>
 
     <script>
+        "use strict";
         function iniciarMapa() { 
-            var map = new google.maps.Map(document.getElementById("mapa"), { center: { lat: 21.152639, lng: -101.711598 }, zoom: 14 });
+            var propiedades = { center: { lat: 21.152639, lng: -101.711598 }, zoom: 14 }
+            var mapa = document.getElementById("mapa")
+            var map = new google.maps.Map(mapa, propiedades);
             var informacion = new google.maps.InfoWindow;
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
