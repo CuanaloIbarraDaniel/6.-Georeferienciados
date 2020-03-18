@@ -61,8 +61,11 @@
 
             borrar.classList.add('btn');
             borrar.classList.add('btn-danger');
+            li.classList.add('mt-3');
+            nombre.classList.add('ml-1');
+            codigo.classList.add('ml-2');
 
-            nombre.textContent = doc.data().nombre;
+            nombre.textContent = doc.data().nombre + ":";
             codigo.textContent = doc.data().codigo;
             borrar.textContent = "Borrar";
 
