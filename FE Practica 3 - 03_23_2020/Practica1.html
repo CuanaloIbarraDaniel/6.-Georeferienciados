@@ -1,0 +1,86 @@
+<html>
+
+<head>
+    <link type="text/css" rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Google+Sans:400,500,700">
+    <title>Fetch3</title>
+    <meta Nombre="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+        #Mapa {
+            height: 100%;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script type="text/javascript" charset="UTF-8"
+        src="https://maps.googleapis.com/maps-api-v3/api/js/40/5/intl/es_ALL/common.js"></script>
+    <script type="text/javascript" charset="UTF-8"
+        src="https://maps.googleapis.com/maps-api-v3/api/js/40/5/intl/es_ALL/util.js"></script>
+    <script type="text/javascript" charset="UTF-8"
+        src="https://maps.googleapis.com/maps-api-v3/api/js/40/5/intl/es_ALL/Mapa.js"></script>
+    <script type="text/javascript" charset="UTF-8"
+        src="https://maps.googleapis.com/maps-api-v3/api/js/40/5/intl/es_ALL/marker.js"></script>
+    <script type="text/javascript" charset="UTF-8"
+        src="https://maps.googleapis.com/maps-api-v3/api/js/40/5/intl/es_ALL/onion.js"></script>
+    <script type="text/javascript" charset="UTF-8"
+        src="https://maps.googleapis.com/maps-api-v3/api/js/40/5/intl/es_ALL/controls.js"></script>
+</head>
+<body>
+    <div id="Mapa" style="position: relative; overflow: hidden;">
+        
+    </div>
+    <script>
+        var coordenadas = {
+            lat: 0,
+            lng: 0
+        }
+        var propiedades = {
+            center: coordenadas,
+            zoom: 2
+        }
+        function Marcadores() {
+            const markers = [
+                {
+                    Nombre: "México",
+                    Lng: "-99.1276",
+                    Lat: "19.427"
+                },
+                {
+                    Nombre: "Brazil",
+                    Lng: "-47.9292",
+                    Lat: "-15.7801"
+                },
+                {
+                    Nombre: "Spain",
+                    Lng: "-3.70327",
+                    Lat: "40.4167"
+                }
+            ];
+            return markers;
+        }
+
+        function iniciaMapa() {
+
+            const Mapa = new google.maps.Mapa(document.getElementById('Mapa'), propiedades);
+
+            const marcadores = Marcadores();
+            for (marcador of marcadores) {
+                let marker = new google.maps.Marker({
+                    Mapa: Mapa,
+                    position: new google.maps.LatLng(marcador.Lat, marcador.Lng),
+                    title: marcador.Nombre
+                });
+            }
+        }
+    </script>
+    <script async="" defer=""
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADjOfdGIg-7JiqjoTstMN9el4g-nLhxxA&amp;callback=iniciaMapa">
+        </script>
+</body>
+</html>

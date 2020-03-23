@@ -1,0 +1,24 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fecht 1</title>
+</head>
+<body>
+    <div id="IdPaises">
+        <p>País: Argentina, Casos: 503</p>
+    </div>
+    <script>
+        var IdPaises = document.getElementById("IdPaises");
+        fetch('data.json').then(function (response) { // GETS ALL THE NECESSARY DATA FROM THE JSON
+            response.json().then(function (data) {
+                data.forEach(Registrar => { // GOES FOR EACH ELEMENT IN THE JSON FILE
+                    let Nombre = document.createElement("p"); // CREATES A PARAGRAPH
+                    Nombre.textContent = "País: " + Registrar.Country + ", Casos: " + Registrar.cases;
+                    IdPaises.appendChild(Nombre);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
