@@ -1,0 +1,283 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FireBase</title>
+
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-firestore.js"></script>
+    <script src="https://kit.fontawesome.com/725910d27b.js" crossorigin="anonymous"></script>
+    <link href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all" rel="stylesheet" id="font-awesome-5-kit-css">
+    <link href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all" rel="stylesheet" id="font-awesome-5-kit-css">
+    <link href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all" rel="stylesheet" id="font-awesome-5-kit-css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body class="bg-light">
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h3 class="d-flex justify-content-center"><i class="fas fa-boxes text-primary mr-2" aria-hidden="true"></i>Lista de productos</h3>
+                </div>
+                <div class="col-6">
+                    <button type="text" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ventananuevo">Agregar Nuevo Producto
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <ul id="lista" class="list-group">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="ventananuevo">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Nuevo producto</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form id="forma">
+                        <div class="row">
+                            <div class="col-12 col-md-4 py-2">
+                                <input type="text" name="Nombre" required="" class="form-control" placeholder="Nombre">
+                            </div>
+                            <div class="col-12 col-md-4 py-2">
+                                <input type="text" name="Codigo" required="" class="form-control" placeholder="Código">
+                            </div>
+                            <div class="col-12 col-md-4 py-2">
+                                <button type="submit" class="btn btn-primary">Agregar<i class="fas fa-plus"
+                                        aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- The Modal -->
+    <div class="modal fade " id="ventanaeditar">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Editar producto</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form id="formaeditar">
+                        <div class="row">
+                            <div class="col-12 col-md-4 py-2">
+                                <input type="text" name="Nombreeditar" required="" class="form-control"
+                                    placeholder="Nombre">
+                            </div>
+                            <div class="col-12 col-md-4 py-2">
+                                <input type="text" name="Codigoeditar" required="" class="form-control"
+                                    placeholder="Código">
+                            </div>
+                            <div class="col-12 col-md-4 py-2">
+                                <input type="hidden" name="ideditar" id="ideditar">
+                                <button type="submit" class="btn btn-primary">Guardar cambios <i class="fas fa-save"
+                                        aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyAMH-rsvMKOvOYe9fER2uHqhCsvilf42QU",
+            authDomain: "pro06-52749.firebaseapp.com",
+            databaseURL: "https://pro06-52749.firebaseio.com",
+            projectId: "pro06-52749",
+            storageBucket: "pro06-52749.appspot.com",
+            messagingSenderId: "485109000366",
+            appId: "1:485109000366:web:68534d71bef6188bb2653f",
+            measurementId: "G-VBNJD6NW5L"
+        };
+
+
+        const productoslista = document.querySelector("#lista");
+        const formulario = document.querySelector("#forma");
+        const formularioeditar = document.querySelector("#formaeditar");
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+
+
+        function muestraRegistros(doc) {
+            var registro = new Registro(doc.id, doc.data().Nombre, doc.data().Codigo);
+            let Lista = document.createElement("li");
+            let Division = document.createElement("div");
+            Lista.setAttribute("id", registro.id);
+            Division.className = "input-group";
+            let DNombre = document.createElement("div");
+            let SNombre = document.createElement("span");
+            DNombre.className = "input-group-prepend";
+            SNombre.className = "input-group-text";
+            SNombre.textContent = "Nombre";
+            DNombre.appendChild(SNombre);
+            let DCodigo = document.createElement("div");
+            let SCodigo = document.createElement("span");
+            DCodigo.className = "input-group-prepend";
+            SCodigo.className = "input-group-text";
+            SCodigo.textContent = "Codigo";
+            DCodigo.appendChild(SCodigo);
+            let Nombre = document.createElement("input");
+            Nombre.type = "text";
+            Nombre.value = registro.Nombre;
+            Nombre.className = "nombre form-control";
+            let Codigo = document.createElement("input");
+            Codigo.type = "text";
+            Codigo.value = registro.Codigo;
+            Codigo.className = "codigo form-control";
+            let Borrar = document.createElement("button");
+            Borrar.className = "btn btn-danger m-3";
+            Borrar.textContent = "Borrar";
+            let Editar = document.createElement("button");
+            Editar.className = "btn btn-success m-3";
+            Editar.textContent = "Editar";
+            Editar.setAttribute("data-toggle", "modal");
+            Editar.setAttribute("data-target", "#ventanaeditar");
+
+            
+            Lista.appendChild(Borrar);
+            Lista.appendChild(Editar);
+            Division.appendChild(DNombre);
+            Division.appendChild(Nombre);
+            Division.appendChild(DCodigo);      
+            Division.appendChild(Codigo);
+            Lista.appendChild(Division);
+            productoslista.appendChild(Lista);
+            Borrar.addEventListener("click", (e) => {
+                let id = e.target.parentElement.getAttribute("id");
+                registro.Borrar(id);
+            });
+
+            Editar.addEventListener("click", (e) => {
+                let id = e.target.parentElement.getAttribute("id");
+                registro.Editar(id);
+            });
+
+        }
+
+
+
+        db.collection('productos').onSnapshot(snapshot => {
+            let changes = snapshot.docChanges();
+            changes.forEach(change => {
+                if (change.type == 'added') {
+                    muestraRegistros(change.doc);
+                } else if (change.type == 'removed') {
+                    console.log(change.doc.id);
+                    let valorid = document.getElementById(change.doc.id);
+                    productoslista.removeChild(valorid);
+                }
+            });
+        });
+
+
+
+        formulario.addEventListener('submit', (e) => {
+            e.preventDefault();
+            var registro = new Registro(null, formulario.Nombre.value, formulario.Codigo.value);
+            registro.agregar();
+            formulario.Nombre.value = '';
+            formulario.Codigo.value = '';
+            $('#ventananuevo').modal('hide');
+        });
+
+
+
+        formularioeditar.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let id = formularioeditar.ideditar.value;
+            let Nombre = formularioeditar.Nombreeditar.value;
+            let Codigo = formularioeditar.Codigoeditar.value;
+            var registro = new Registro(id, Nombre, Codigo);
+            registro.actualizar();
+            var idregistro = document.getElementById(id);
+            idregistro.querySelector('.Nombre').value = Nombre + ' ';
+            idregistro.querySelector('.Codigo').value = Codigo + ' ';
+            formularioeditar.Nombreeditar.value = '';
+            formularioeditar.Codigoeditar.value = '';
+            $('#ventanaeditar').modal('hide');
+        });
+
+
+
+        class Registro {
+            constructor(id, Nombre, Codigo) {
+                this.id = id;
+                this.Nombre = Nombre;
+                this.Codigo = Codigo;
+            };
+
+            Borrar(id) {
+                db.collection("productos").doc(id).delete();
+            };
+
+            agregar() {
+                db.collection('productos').add({
+                    Nombre: this.Nombre,
+                    Codigo: this.Codigo
+                });
+            }
+
+            Editar(id) {
+                formularioeditar.Nombreeditar.value = this.Nombre;
+                formularioeditar.Codigoeditar.value = this.Codigo;
+                formularioeditar.ideditar.value = this.id;
+            };
+
+            actualizar() {
+                db.collection('productos').doc(this.id).update({
+                    Nombre: this.Nombre,
+                    Codigo: this.Codigo
+                });
+            };
+        };
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

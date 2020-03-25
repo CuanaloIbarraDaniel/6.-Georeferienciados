@@ -1,0 +1,117 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realtime Coronavirus Map</title>
+    <style>
+        #Mapa {
+            width: 100%;
+            height: 100%;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            ;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="Mapa" style="position: relative; overflow: hidden;">
+
+    </div>
+    <script>
+
+        var coordenadas = {
+            lat: 0,
+            lng: 0
+        };
+
+        var propiedades = {
+            center: coordenadas,
+            zoom: 2
+        };
+
+        function Timeout(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+
+        async function iniciaMapa() {
+            const Mapa = new google.maps.Map(document.getElementById('Mapa'), propiedades);
+            await fetch('https://corona.lmao.ninja/countries').then(function (respuesta) {
+                respuesta.json().then(function (data) {
+                    data.forEach(country => {
+                        let infowindow = new google.maps.InfoWindow({
+                            content: `<h2> ${country.country} (${country.countryInfo.iso3})</h2>
+                            <p><strong>Casos:</strong> ${country.cases}</p> 
+                            <p><strong>Activos:</strong> ${country.active}</p>
+                            <p><strong>Recuperados:</strong> ${country.recovered}</p>
+                            <p><strong>Criticos:</strong> ${country.critical}</p>
+                            <p><strong>Muertos:</strong> ${country.deaths}</p>
+                            <p><strong>Casos por millon:</strong> ${country.casesPerOneMillion}</p>
+                            <p><strong>Casos por millon:</strong> ${country.deathsPerOneMillion}</p>`
+                        });
+                        let marker = new google.maps.Marker({
+                            map: Mapa,
+                            position: new google.maps.LatLng(country.countryInfo.lat, country.countryInfo.long),
+                            title: country.country
+                        });
+                        marker.addListener('click', function () {
+                            infowindow.open(Mapa, marker);
+                        });
+                        marker.addListener('blur', function () {
+                            infowindow.close();
+                        });
+                    });
+                });
+            });
+            // for (Marcador of Marcadores) {
+            //     console.log("Lat: " + Marcador.Lat + " Lng: " + Marcador.Lng);
+            //     let marker = new google.maps.Marker({
+            //         map: Mapa,
+            //         position: new google.maps.LatLng(Marcador.Lat, Marcador.Lng),
+            //         title: Marcador.Nombre
+            //     });
+            // }
+
+
+            // const map = new google.maps.Map(document.getElementById('map'), propiedades);
+            // datos.forEach(marcador => {
+            //     fetch('https://corona.lmao.ninja/countries').then(function (respuesta) {
+            //         //console.log(respuesta);
+            //         respuesta.json().then(function (datospaises) {
+            //             console.log(datospaises);
+            //             datospaises.forEach(registro => {
+            //                 var informacion = "<strong>País: </strong>" + registro.country + ", <strong>casos:</strong> " + registro.cases;
+            //                 var infowindow = new google.maps.InfoWindow({
+            //                     content: informacion
+            //                 });
+            //                 if (registro.country == marcador.CountryName) {
+            //                     let marker = new google.maps.Marker({
+            //                         map: map,
+            //                         position: new google.maps.LatLng(marcador.CapitalLatitude, marcador.CapitalLongitude),
+            //                         title: marcador.CountryName + ' ' + registro.cases
+            //                     });
+            //                     marker.addListener('click', function () {
+            //                         infowindow.open(map, marker);
+            //                     });
+            //                 }
+            //             });
+            //         });
+            //     });
+            // });
+        };
+
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpuvAO0z77RBz_rOfuXt8rHTTBWoI4TqI&callback=iniciaMapa"
+        async defer></script>
+</body>
+
+</html>
