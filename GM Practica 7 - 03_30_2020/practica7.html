@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practica 7</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"/>
+    <style>
+      html,
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+
+      #mapa {
+        width: 100%;
+        height: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h1>Google Maps Clustering</h1>
+            <div id="mapa"></div>
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="col-3 text-center">
+            <button class="btn btn-primary btn-block" id="IdBtnRoadMap">Roadmap View</button>
+          </div>
+          <div class="col-3 text-center">
+            <button class="btn btn-warning btn-block" id="IdBtnSatellite">Satellite View</button>
+          </div>
+          <div class="col-3 text-center">
+            <button class="btn btn-danger btn-block" id="IdBtnHybrid">Hybrid View</button>
+          </div>
+          <div class="col-3 text-center">
+            <button class="btn btn-success btn-block" id="IdBtnTerrain">Terrain View</button>
+          </div>
+        </div>
+    </div>
+
+    <script>
+      var Coordenadas = [
+        { lat: -31.563910, lng: 147.154312 },
+        { lat: -33.718234, lng: 150.363181 },
+        { lat: -33.727111, lng: 150.371124 },
+        { lat: -33.848588, lng: 151.209834 },
+        { lat: -33.851702, lng: 151.216968 },
+        { lat: -34.671264, lng: 150.863657 },
+        { lat: -35.304724, lng: 148.662905 },
+        { lat: -36.817685, lng: 175.699196 },
+        { lat: -36.828611, lng: 175.790222 },
+        { lat: -37.750000, lng: 145.116667 },
+        { lat: -37.759859, lng: 145.128708 },
+        { lat: -37.765015, lng: 145.133858 },
+        { lat: -37.770104, lng: 145.143299 },
+        { lat: -37.773700, lng: 145.145187 },
+        { lat: -37.774785, lng: 145.137978 },
+        { lat: -37.819616, lng: 144.968119 },
+        { lat: -38.330766, lng: 144.695692 },
+        { lat: -39.927193, lng: 175.053218 },
+        { lat: -41.330162, lng: 174.865694 },
+        { lat: -42.734358, lng: 147.439506 },
+        { lat: -42.734358, lng: 147.501315 },
+        { lat: -42.735258, lng: 147.438000 },
+        { lat: -43.999792, lng: 170.463352 }
+      ];
+
+      function iniciaMapa() {
+        var Mapa = new google.maps.Map(document.getElementById("mapa"), {
+          center: { lat: -31.56391, lng: 147.154312 },
+          zoom: 3
+        });
+
+        var Diccionario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var Marcadores = [];
+        var A1 = 1;
+        Coordenadas.forEach(Coordenada => {
+          console.log(Coordenada);
+          let marcador = new google.maps.Marker({
+            map: Mapa,
+            position: Coordenada,
+            label: Diccionario[A1 % Diccionario.length]
+          });
+          Marcadores.push(marcador);
+          A1++;
+        });
+
+        var makerCluster = new MarkerClusterer(Mapa, Marcadores, { imagePath:"https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+          maxZoom: 10
+        });
+
+        document.getElementById("IdBtnRoadMap").addEventListener("click", function() {
+          Mapa.setMapTypeId("roadmap");
+          });
+        document.getElementById("IdBtnSatellite").addEventListener("click", function() {
+          Mapa.setMapTypeId("satellite");
+          });
+        document.getElementById("IdBtnHybrid").addEventListener("click", function() {
+          Mapa.setMapTypeId("hybrid");
+          });
+        document.getElementById("IdBtnTerrain").addEventListener("click", function() {
+          Mapa.setMapTypeId("terrain");
+          });
+      }
+    </script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpuvAO0z77RBz_rOfuXt8rHTTBWoI4TqI&callback=iniciaMapa"
+      async
+      defer
+    ></script>
+  </body>
+</html>
