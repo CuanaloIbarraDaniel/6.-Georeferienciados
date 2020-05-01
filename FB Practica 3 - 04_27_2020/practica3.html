@@ -1,0 +1,187 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UBOR EATS</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <style>
+      img {
+        width: 80%;
+      }
+
+      .logged-in,
+      .logged-out {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+          <a class="navbar-brand" href="#">DLS EATS</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-item nav-link logged-in" href="#" data-toggle="modal" data-target="#IdModalCuenta">Mi Cuenta</a>
+                <a class="nav-item nav-link logged-out" href="#" data-toggle="modal" data-target="#IdModalIngresar">Ingresar</a>
+                <a class="nav-item nav-link logged-out" href="#" data-toggle="modal" data-target="#IdModalRegistrar">Regístrate</a>
+                <a class="nav-item nav-link logged-in" href="#" id="IdSalir">Salir</a>
+              </div>
+          </div>
+      </nav>
+  
+      <!-- MODAL QUE SE MUESTRA AL INGRESAR -->
+      <div class="modal fade" id="IdModalIngresar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title" id="IdModalIngresarLabel">Ingresar</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+              <div class="modal-body">
+                  <form id="IdFormIngresar">
+                      <div class="row m-2">
+                          <div class="col-12">
+                              <input type="email" class="form-control" required id="IdFormIngresarCorreo" placeholder="Ingrese su correo electrónico">
+                          </div>
+                      </div>
+                      <div class="row m-2">
+                          <div class="col-12">
+                              <input type="password" class="form-control" required id="IdFormIngresarContrasena" placeholder="Ingrese su contraseña">
+                          </div>
+                      </div>
+                      <div class="row text-center">
+                          <div class="col-12">
+                              <input type="submit" class="btn btn-primary" value="Ingresar">
+                              <p class="error text-danger"></p>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="row">
+                  <div class="col-12 text-center">
+                      <span onclick="IngresarConGoogle()" class="btn btn-primary btn-danger">Continuar con Gmail <i class="fas fa-plus"></i></span>
+                  </div>
+              </div>
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+          </div>
+          </div>
+      </div>
+  
+  
+      <!-- MODAL QUE APARECE AL REGISTRAR -->
+      <div class="modal fade" id="IdModalRegistrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title" id="registrateModalLabel">Regístrate</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+              <div class="modal-body">
+                  <form id="IdFormRegistrar" autocomplete="off">
+                      <div class="row m-2">
+                          <div class="col-12">
+                              <input type="text" class="form-control" id="IdFormRegistroNombre" required placeholder="Ingrese su nombre completo">
+                          </div>
+                      </div>
+                      <div class="row m-2">
+                          <div class="col-12">
+                              <input type="email" class="form-control" id="IdFormRegistroCorreo" required placeholder="Ingrese su correo electrónico">
+                          </div>
+                      </div>
+                      <div class="row m-2">
+                          <div class="col-12">
+                              <input type="text" class="form-control" id="IdFormRegistroContrasena" required placeholder="Ingrese su contraseña">
+                          </div>
+                      </div>
+                      <div class="row m-2">
+                          <div class="col-12">
+                              <input type="number" step="any" class="form-control" id="IdFormRegistroTelefono" required placeholder="Ingrese su teléfono">
+                          </div>
+                      </div>
+                      <div class="row m-2">
+                          <div class="col-12">
+                              <input type="text" class="form-control" id="IdFormRegistroDireccion" required placeholder="Ingrese su dirección">
+                          </div>
+                      </div>
+                      <div class="row text-center">
+                          <div class="col-12">
+                              <input type="submit" class="btn btn-primary">
+                              <p class="error text-danger"></p>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+          </div>
+          </div>
+      </div>
+  
+      <!-- MODEL QUE APARCE AL MOSTRAR LA CUENTA -->
+      <div class="modal fade" id="IdModalCuenta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title" id="micuentaModalLabel">Mi Cuenta</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+              <div class="modal-body">
+                  <div class="row m-2">
+                      <div class="col-12 DatosCuenta" >
+                          Aquí va la info de su cuenta
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+          </div>
+          </div>
+      </div>
+  
+      <!-- LISTA DE PLATILLOS QUE EXISTEN -->
+      <div class="container" style="margin-top: 30px;">
+          <div class="fluid-container">
+            <div class="row text-center" id="ListaPlatillos">
+            </div>
+          </div>
+      </div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-firestore.js"></script>
+
+    <script>
+      var firebaseConfig = { // CONFIGURACION DE FIREBASE
+        apiKey: "AIzaSyADaqEvJA9uI44QUTG0ueN33NsZB-kgxp8",
+        authDomain: "authorization-85178.firebaseapp.com",
+        databaseURL: "https://authorization-85178.firebaseio.com",
+        projectId: "authorization-85178",
+        storageBucket: "authorization-85178.appspot.com",
+        messagingSenderId: "522442723422",
+        appId: "1:522442723422:web:939d3b56b27fbcc83224cf",
+      };
+      firebase.initializeApp(firebaseConfig); // INICIALIZAR FIREBASE
+      const auth = firebase.auth(); // INICIALIZAR EL CLIENTE DE AUTHENTIFICACION DE FIREBASE
+      const db = firebase.firestore(); // INICIAR FIRESTORE PARA GUARDAR DATOS
+    </script>
+
+    <script src="./Authorization.js"></script>
+    <script src="./Index.js"></script>
+    <!-- <script src="."></script> -->
+  </body>
+</html>

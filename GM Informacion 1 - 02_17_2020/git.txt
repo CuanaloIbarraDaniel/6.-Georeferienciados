@@ -1,7 +1,27 @@
 git add . // añade todos los archivos y cambios hechos.
 git commit -m *Nuevo* // añade comentarios a la acción de commit.
 git push origin master // actualizar el documento.
+git status // Genera un status sobre el actual posicion del repositorio ante los errores.
+git version // obtiene la version de git.
+git config --global user.name // da el nombre del usuario.
+git config --global user.email // da el email de usuario.
+git remote add origin {link al repositorio} // puedes pushear información a un repositorio externo. 
+git pull // obtiene los datos del repositorio y su información.
+git log // obtiene una lista de los commits que se han hecho.
+git checkout {ID DEL COMMIT} // regresa a como estabas al momento en el cual se ha dado el commit. Regresa.
+git revert {ID DEL COMMIT} // te regresa a como estaba y modifica los datos. 
+git reset {ID DEL COMMIT} // se regresa a como estaba y borra el historial de commits.
+git branch {NOMBRE} // CREA UNA NUEVA RAMA. LOS ARCHIVOS ENTRE LOS SE MUEVEN SI TE CAMBIAS DE RAMA.
+git branch -a // OBTIENE EL NOMBRE DE LA RAMA actual
+git checkout {NOMBRE DE LA RAMA} // TE MUEVE A LA RAMA DE VENTAS
+git checkout -b {NOMBRE} // CREA LA RAMA Y TE MUEVE A ELLA
+git merge {NOMBRE DE LA RAMA} // UNE LA RAMA A MASTER 
+:wq // IGNORA EL ERROR QUE MENCIONA QUE SE HA MODIFICADO DATOS DE LAS RAMAS
+git branch --delete {NOMBRE DE LA RAMA} // BORRA LA RAMA CREADA. TE VA A DAR ERROR SI NO HAS HECHO EL MERGE.
+git clone {URL DEL REPOSITORI} // LOS FORKS PERMITEN COPIAR UN REPOSITORIO A UNO NUEVO CON NOSOTROS.
+pwd {AL PROYECTO} // SE NECESITA PONER LA CONTRASEÑA PARA PODER HACER CAMBIOS A UN REPOSITORIO NUESTRO EXTERNO.
 
+Hacer un pull request le dice a la persona que hay una contribución que tiene que ser aprobada.
 
 Concepto                                        Comando
 Inicializar el repositorio                      $git init
