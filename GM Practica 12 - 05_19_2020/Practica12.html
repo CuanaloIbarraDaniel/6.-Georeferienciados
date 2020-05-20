@@ -1,0 +1,191 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos en mapas</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+
+        html, body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #GoogleMapEvent, #GoogleMapCenter, #GoogleMapZoom, #GoogleMapCenterMarker, #GoogleMapMouseEvent, #GoogleMapDomListener {
+            width: 100%;
+            height: 340px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid m-2 text-center">
+        <div class="row">
+            <div class="col-12">
+                <h1>Eventos en Mapas</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div id="GoogleMapEvent"></div>
+                <div class="card text-white bg-dark mb-3">
+                    <div class="card-body">
+                        <b>Evento Click en Mapa</b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div id="GoogleMapCenter"></div>
+                <div class="card text-white bg-dark mb-3">
+                    <div class="card-body">
+                        <b>Regresa al centro</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div id="GoogleMapZoom"></div>
+                <div class="card text-white bg-dark mb-3">
+                    <div class="card-body">
+                        <b>Obtiene nivel de Zoom</b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div id="GoogleMapCenterMarker"></div>
+                <div class="card text-white bg-dark mb-3">
+                    <div class="card-body">
+                        <b>Coloca marcador y mueve al centro</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div id="GoogleMapMouseEvent"></div>
+                <div class="card text-white bg-dark mb-3">
+                    <div class="card-body">
+                        <b>Obtiene { lat: 21.152639, lng: -101.711598 } con mapsMouseEvent</b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div id="GoogleMapDomListener"></div>
+                <div class="card text-white bg-dark mb-3">
+                    <div class="card-body">
+                        <b>Add Dom Listener</b>
+                        <button class="btn btn-primary btn-block" id="BtnCenterCamera">Centrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        function StartGoogleMap(){
+            var GoogleMapEvent = new google.maps.Map(document.getElementById('GoogleMapEvent'), {
+                center: { lat: 21.152639, lng: -101.711598 },
+                zoom: 12
+            });
+
+            var GoogleMapMarker_1 = new google.maps.Marker({
+                position: { lat: 21.152639, lng: -101.711598 },
+                map: GoogleMapEvent
+            });
+            GoogleMapMarker_1.addListener('click', function(){
+                GoogleMapEvent.setZoom(8);
+                GoogleMapEvent.setCenter(GoogleMapMarker_1.getPosition());
+            });
+
+            var GoogleMapCenter = new google.maps.Map(document.getElementById('GoogleMapCenter'), {
+                center: { lat: 21.152639, lng: -101.711598 },
+                zoom: 12
+            });
+
+            var GoogleMapMarker_2 = new google.maps.Marker({
+                position: { lat: 21.152639, lng: -101.711598 },
+                map: GoogleMapCenter
+            });
+
+            GoogleMapCenter.addListener('center_changed', function(){
+                window.setTimeout( function(){
+                    GoogleMapCenter.panTo(GoogleMapMarker_2.getPosition());
+                },3000);
+            });
+
+            var GoogleMapZoom = new google.maps.Map(document.getElementById('GoogleMapZoom'), {
+                center: { lat: 21.152639, lng: -101.711598 },
+                zoom: 12
+            });
+
+            var GoogleMapInfoWindow = new google.maps.InfoWindow({
+                content : 'Cambia el zoom',
+                position : { lat: 21.152639, lng: -101.711598 }
+            });
+            GoogleMapInfoWindow.open(GoogleMapZoom);
+
+            GoogleMapZoom.addListener('zoom_changed', function(){
+                GoogleMapInfoWindow.setContent('Zoom' + GoogleMapZoom.getZoom());
+            });
+
+            var GoogleMapCenterMarker = new google.maps.Map(document.getElementById('GoogleMapCenterMarker'), {
+                center: { lat: 21.152639, lng: -101.711598 },
+                zoom: 12
+            });
+
+            GoogleMapCenterMarker.addListener('click', function(e){
+                SetMarker(e.latLng);
+            });
+
+            function SetMarker(latLng){
+                var GoogleMapMarker_1 = new google.maps.Marker({
+                    position: latLng,
+                    map: GoogleMapCenterMarker
+                });
+                GoogleMapCenterMarker.panTo(latLng);
+            }
+
+            var GoogleMapMouseEvent = new google.maps.Map(document.getElementById('GoogleMapMouseEvent'), {
+                center: { lat: 21.152639, lng: -101.711598 },
+                zoom: 12
+            });
+
+            var GoogleMapInfoWindow = new google.maps.InfoWindow({
+                content : 'Haz click para obtener las { lat: 21.152639, lng: -101.711598 }',
+                position : { lat: 21.152639, lng: -101.711598 }
+            });
+            GoogleMapInfoWindow.open(GoogleMapMouseEvent);
+
+            GoogleMapMouseEvent.addListener('click', function(evento){
+                GoogleMapInfoWindow.close();
+                GoogleMapInfoWindow = new google.maps.InfoWindow({ position: evento.latLng });
+                GoogleMapInfoWindow.setContent(evento.latLng.toString());
+                GoogleMapInfoWindow.open(GoogleMapMouseEvent);
+            });
+
+            var GoogleMapDomListener = new google.maps.Map(document.getElementById('GoogleMapDomListener'), {
+                center: { lat: 21.152639, lng: -101.711598 },
+                zoom: 12
+            });
+
+            google.maps.event.addDomListener(GoogleMapDomListener, 'click', function(){
+                window.alert('Se ha hecho click en el mapa.');
+            });
+
+            var Button = document.getElementById('BtnCenterCamera');
+            google.maps.event.addDomListener(Button, 'click', function(){
+                 GoogleMapDomListener.panTo({ lat: 21.152639, lng: -101.711598 });
+            });
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpuvAO0z77RBz_rOfuXt8rHTTBWoI4TqI&callback=StartGoogleMap" async defer></script>
+</body>
+</html>

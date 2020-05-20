@@ -1,0 +1,186 @@
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Maps Options</title>
+    
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+        <style>
+    
+            html, body {
+                margin: 0px;
+                padding: 0px;
+            }
+    
+            #GoogleMapStandar, #GoogleMapNoControl, #GoogleMapNoZoom, #GoogleMapOptionControl, #GoogleMapPositionControl, #GoogleMapBoundRestriction {
+                width: 100%;
+                height: 340px;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <div class="container-fluid m-2 text-center">
+            <div class="row">
+                <div class="col-12">
+                    <h1>Controles de Mapa</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div id="GoogleMapStandar"></div>
+                    <div class="card text-white bg-dark mb-3">
+                        <div class="card-body">
+                            <b>Mapa con controles estándar</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div id="GoogleMapNoControl"></div>
+                    <div class="card text-white bg-dark mb-3">
+                        <div class="card-body">
+                            <b>Mapa sin controles</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div id="GoogleMapNoZoom"></div>
+                    <div class="card text-white bg-dark mb-3">
+                        <div class="card-body">
+                            <b>Mapa con zoom desactivado</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div id="GoogleMapOptionControl"></div>
+                    <div class="card text-white bg-dark mb-3">
+                        <div class="card-body">
+                            <b>Mapa con ControlOptions</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div id="GoogleMapPositionControl"></div>
+                    <div class="card text-white bg-dark mb-3">
+                        <div class="card-body">
+                            <b>Mapa con ControlPosition</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div id="GoogleMapBoundRestriction"></div>
+                    <div class="card text-white bg-dark mb-3">
+                        <div class="card-body">
+                            <b>Mapa con Restricting MapBounds</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    
+        <script>
+    
+            function StartGoogleMap(){
+                var GoogleStyledMap = new google.maps.StyledMapType([{elementType:"geometry",stylers:[{color:"#242f3e",},],},{elementType:"labels.text.fill",stylers:[{color:"#746855",},],},{elementType:"labels.text.stroke",stylers:[{color:"#242f3e",},],},{featureType:"administrative.locality",elementType:"labels.text.fill",stylers:[{color:"#d59563",},],},{featureType:"poi",elementType:"labels.text.fill",stylers:[{color:"#d59563",},],},{featureType:"poi.business",elementType:"labels.text",stylers:[{color:"#ffff00",},{weight:0.5,},],},{featureType:"poi.medical",stylers:[{color:"#0080ff",},{weight:1.5,},],},{featureType:"poi.medical",elementType:"labels.text",stylers:[{color:"#ffffff",},],},{featureType:"poi.park",stylers:[{color:"#00ff00",},{lightness:50,},{visibility:"on",},{weight:1,},],},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#263c3f",},],},{featureType:"poi.park",elementType:"geometry.fill",stylers:[{color:"#008000",},],},{featureType:"poi.park",elementType:"labels.text",stylers:[{color:"#ffffff",},{weight:1,},],},{featureType:"road",elementType:"geometry",stylers:[{color:"#38414e",},],},{featureType:"road",elementType:"geometry.stroke",stylers:[{color:"#212a37",},],},{featureType:"road",elementType:"labels.text.fill",stylers:[{color:"#9ca5b3",},],},{featureType:"road.highway",elementType:"geometry",stylers:[{color:"#746855",},],},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{color:"#ff0080",},{weight:1.5,},],},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#1f2835",},],},{featureType:"road.highway",elementType:"labels.text.fill",stylers:[{color:"#f3d19c",},],},{featureType:"transit",elementType:"geometry",stylers:[{color:"#2f3948",},],},{featureType:"transit.station",elementType:"labels.text.fill",stylers:[{color:"#d59563",},],},{featureType:"water",elementType:"geometry",stylers:[{color:"#17263c",},],},{featureType:"water",elementType:"labels.text.fill",stylers:[{color:"#515c6d",},],},{featureType:"water",elementType:"labels.text.stroke",stylers:[{color:"#17263c",},],},],{ name: "Vista Oscura" });
+                var GoogleMapStandar = new google.maps.Map(document.getElementById('GoogleMapStandar'), {
+                    center: { lat: 21.152639, lng: -101.711598 },
+                    zoom: 12,
+                    mapTypeControlOptions : {
+                        mapTypeIds : [ 'roadmap', 'satellite', 'terrain', "style_map"]
+                    }
+                });
+                GoogleMapStandar.mapTypes.set("style_map", GoogleStyledMap);
+                GoogleMapStandar.setMapTypeId("roadmap");
+
+                var GoogleMapNoControl = new google.maps.Map(document.getElementById('GoogleMapNoControl'), {
+                    center: { lat: 21.152639, lng: -101.711598 },
+                    zoom: 12,
+                    disableDefaultUI: true,
+                    mapTypeControlOptions : {
+                        mapTypeIds : [ 'roadmap', 'satellite', 'terrain', "style_map"]
+                    }
+                });
+                GoogleMapNoControl.mapTypes.set("style_map", GoogleStyledMap);
+                GoogleMapNoControl.setMapTypeId("roadmap");
+    
+                var GoogleMapNoZoom = new google.maps.Map(document.getElementById('GoogleMapNoZoom'), {
+                    center: { lat: 21.152639, lng: -101.711598 },
+                    zoom: 12,
+                    zoomControl: false,
+                    scaleControl: false,
+                    mapTypeControlOptions : {
+                        mapTypeIds : [ 'roadmap', 'satellite', 'terrain', "style_map"]
+                    }
+                });
+                GoogleMapNoZoom.mapTypes.set("style_map", GoogleStyledMap);
+                GoogleMapNoZoom.setMapTypeId("roadmap");
+
+                var GoogleMapOptionControl = new google.maps.Map(document.getElementById('GoogleMapOptionControl'), {
+                    center: { lat: 21.152639, lng: -101.711598 },
+                    zoom: 12,
+                    mapTypeControl: true,
+                    mapTypeControlOptions : {
+                        style : google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                        mapTypeIds : [ 'roadmap', 'satellite', 'terrain', "style_map"]
+                    }
+                });
+                GoogleMapOptionControl.mapTypes.set("style_map", GoogleStyledMap);
+                GoogleMapOptionControl.setMapTypeId("roadmap");
+       
+                var GoogleMapPositionControl = new google.maps.Map(document.getElementById('GoogleMapPositionControl'),{
+                    center: { lat: 21.152639, lng: -101.711598 },
+                    zoom: 12,
+                    mapTypeControl: true,
+                    mapTypeControlOptions : {
+                        style : google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                        position : google.maps.ControlPosition.TOP_CENTER,
+                        mapTypeIds : [ 'roadmap', 'satellite', 'terrain', "style_map"]
+                    },
+                    zoomControl : true,
+                    zoomControlOptions : {
+                        position : google.maps.ControlPosition.RIGHT_CENTER
+                    },
+                    scaleControl : true,
+                    streetViewControl: true,
+                    streetViewControlOptions : {
+                        position : google.maps.ControlPosition.LEFT_TOP
+                    },
+                    fullscreenControl : true
+                });
+                GoogleMapPositionControl.mapTypes.set("style_map", GoogleStyledMap);
+                GoogleMapPositionControl.setMapTypeId("roadmap");
+    
+                var GoogleMapBoundRestriction = new google.maps.Map(document.getElementById('GoogleMapBoundRestriction'),{
+                    center: { lat: 21.152639, lng:  -101.711598 },
+                    zoom: 12,
+                    restriction: {
+                        latLngBounds : {
+                            north: 21.390039,
+                            south: 20.858414,
+                            west: -102.149631,
+                            east:  -101.092990
+                        },
+                        strictBounds : false
+                    },
+                    mapTypeControlOptions : {
+                        mapTypeIds : [ 'roadmap', 'satellite', 'terrain', "style_map"]
+                    }
+                });
+                GoogleMapBoundRestriction.mapTypes.set("style_map", GoogleStyledMap);
+                GoogleMapBoundRestriction.setMapTypeId("roadmap");
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpuvAO0z77RBz_rOfuXt8rHTTBWoI4TqI&callback=StartGoogleMap" async defer></script>
+    </body>
+</html>
